@@ -1,4 +1,6 @@
 - Git local, utilizo sólo la rama Master para la prueba
 - H2 en memoria, uno para levantar la app y otra para testing
+- lombok
+- Cacheable de Spring boot
 - Swagger para la documentación de la API: http://localhost:8080/swagger-ui/index.html
 - Flyway para los ddl de la base de datos
