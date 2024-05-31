@@ -14,48 +14,48 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.spaceship.model.Spaceship;
-import com.project.spaceship.repository.SpaceshipRepository;
+import com.project.spaceship.service.SpaceshipService;
 
 @RestController
 @RequestMapping("/api/spaceships")
 public class SpaceshipController {
 	
 	@Autowired
-    private SpaceshipRepository spaceshipRepository;
+    private SpaceshipService spaceshipService;
 
     @GetMapping
     public List<Spaceship> getAll() {
-        return this.spaceshipRepository.findAll();
+        return this.spaceshipService.findAll();
     }
     
     @GetMapping("/{id}")
     public Spaceship getById(@PathVariable Long id) {
-        return this.spaceshipRepository.findById(id).orElse(null);
+        return this.spaceshipService.findById(id);
     }
 
     @GetMapping("/search")
     public List<Spaceship> searchByName(@RequestParam String name) {
-        return this.spaceshipRepository.findByNameContainingIgnoreCase(name);
+        return this.spaceshipService.findByNameContainingIgnoreCase(name);
     }
     
     @PostMapping
     public Spaceship create(@RequestBody Spaceship spaceship) {
-        return this.spaceshipRepository.save(spaceship);
+        return this.spaceshipService.save(spaceship);
     }
 
     @PutMapping("/{id}")
     public Spaceship update(@PathVariable Long id, @RequestBody Spaceship spaceshipDetails) {
-        Spaceship spaceship = this.spaceshipRepository.findById(id).orElse(null);
+        Spaceship spaceship = this.spaceshipService.findById(id);
         if (spaceship != null) {
             spaceship.setName(spaceshipDetails.getName());
-            return this.spaceshipRepository.save(spaceship);
+            return this.spaceshipService.save(spaceship);
         }
         return null;
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-    	this.spaceshipRepository.deleteById(id);
+    	this.spaceshipService.deleteById(id);
     }
 
 }
