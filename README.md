@@ -5,3 +5,4 @@
 - Swagger para la documentación de la API: http://localhost:8080/swagger-ui/index.html
 - Flyway para los ddl de la base de datos
 - Seguridad, credenciales: user y la contraseña aparece en consola al arrancar la app
+- Test de integración con Mockito

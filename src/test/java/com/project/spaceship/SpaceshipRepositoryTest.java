@@ -12,30 +12,30 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import com.project.spaceship.model.Spaceship;
-import com.project.spaceship.repository.SpaceshipRepository;
+import com.project.spaceship.service.SpaceshipService;
 
 @SpringBootTest
 @ActiveProfiles("test")
 class SpaceshipRepositoryTest {
 	
 	@Autowired
-    private SpaceshipRepository spaceshipRepository;
+    private SpaceshipService spaceshipService;
 	
 	@BeforeEach
     public void setUp() {
 		Spaceship s = new Spaceship();
 		s.setName("Test");
-		this.spaceshipRepository.save(s);
+		this.spaceshipService.save(s);
 	}
 	
 	@AfterEach
     public void cleanUp() {
-        this.spaceshipRepository.deleteAll();
+        this.spaceshipService.deleteAll();
     }
 	
 	@Test
 	public void testCreate() {
-		List<Spaceship> list = this.spaceshipRepository.findByNameContainingIgnoreCase("test");
+		List<Spaceship> list = this.spaceshipService.findByNameContainingIgnoreCase("test");
 		assertEquals(list.size(), 1);
 	}
 	
@@ -44,11 +44,11 @@ class SpaceshipRepositoryTest {
 		String oldName = "Test";
 		String newName = "Update";
 		
-        Spaceship s = this.spaceshipRepository.findByName(oldName);
+        Spaceship s = this.spaceshipService.findByName(oldName);
         s.setName(newName);
-        this.spaceshipRepository.save(s);
+        this.spaceshipService.save(s);
 
-        Spaceship updatedSpaceship = this.spaceshipRepository.findByName(newName);
+        Spaceship updatedSpaceship = this.spaceshipService.findByName(newName);
         assertEquals(updatedSpaceship.getName(), newName);
 	}
 
@@ -56,9 +56,9 @@ class SpaceshipRepositoryTest {
 	public void testFindAll() {
 		Spaceship s = new Spaceship();
 		s.setName("Test2");
-		this.spaceshipRepository.save(s);
+		this.spaceshipService.save(s);
 		
-		List<Spaceship> list = this.spaceshipRepository.findAll();
+		List<Spaceship> list = this.spaceshipService.findAll(0,10).toList();
 		assertEquals(list.size(), 2);
 	}
 

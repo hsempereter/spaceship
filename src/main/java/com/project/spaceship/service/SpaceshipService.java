@@ -42,4 +42,12 @@ public class SpaceshipService {
         return this.spaceshipRepository.findByNameContainingIgnoreCase(name);
     }
     
+    public Spaceship findByName(String name) {
+        return this.spaceshipRepository.findByName(name);
+    }
+    
+    public void deleteAll() {
+        this.spaceshipRepository.deleteAll();
+    }
+    
 }
