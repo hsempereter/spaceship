@@ -3,6 +3,9 @@ package com.project.spaceship.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,8 +27,11 @@ public class SpaceshipController {
     private SpaceshipService spaceshipService;
 
     @GetMapping
-    public List<Spaceship> getAll() {
-        return this.spaceshipService.findAll();
+    public ResponseEntity<Page<Spaceship>> getAllSpaceships(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Page<Spaceship> spaceshipsPage = this.spaceshipService.findAll(page, size);
+        return new ResponseEntity<>(spaceshipsPage, HttpStatus.OK);
     }
     
     @GetMapping("/{id}")
