@@ -1,6 +1,7 @@
 - Git local, utilizo sólo la rama Master para la prueba
 - H2 en memoria, uno para levantar la app y otra para testing
 - lombok
-- Cacheable de Spring boot
+- Cacheable de Spring boot (para el listado de todas las naves)
 - Swagger para la documentación de la API: http://localhost:8080/swagger-ui/index.html
 - Flyway para los ddl de la base de datos
+- Seguridad, credenciales: user y la contraseña aparece en consola al arrancar la app
