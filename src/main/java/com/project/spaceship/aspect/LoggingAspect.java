@@ -1,10 +1,9 @@
-package com.project.aspect;
-
-import java.util.logging.Logger;
+package com.project.spaceship.aspect;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class LoggingAspect {
 
-    private static final Logger logger = (Logger) LoggerFactory.getLogger(LoggingAspect.class);
+    private static final Logger logger = LoggerFactory.getLogger(LoggingAspect.class);
 
     /**
 	 * @param joinPoint
@@ -21,7 +20,7 @@ public class LoggingAspect {
     @AfterReturning(pointcut = "execution(* com.project.spaceship.repository.SpaceshipRepository.findById(..)) && args(id)", returning = "result")
     public void logNegative(JoinPoint joinPoint, Long id, Object result) {
         if (id < 0) {
-            logger.warning("Negative ID: " + id);
+            logger.warn("Negative ID: " + id);
         }
     }
 }
