@@ -1,7 +1,6 @@
 package com.project.spaceship.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -36,15 +35,15 @@ public class SpaceshipController {
     }
 	
     @GetMapping("/all")
-    public ResponseEntity<List<Spaceship>> getAll() {
-        return new ResponseEntity<>(this.spaceshipService.findAll(), HttpStatus.OK);
+    public ResponseEntity getAll() {
+        return new ResponseEntity(this.spaceshipService.findAll(), HttpStatus.OK);
     }
     
     @GetMapping("/{id}")
     public ResponseEntity<Spaceship> getById(@PathVariable Long id) {
-    	Optional<Spaceship> s = this.spaceshipService.findById(id);
-    	if ( s.isPresent()) {
-    		return new ResponseEntity<>(s.get(), HttpStatus.OK) ;
+    	Spaceship s = this.spaceshipService.findById(id);
+    	if ( s != null) {
+    		return new ResponseEntity<>(s, HttpStatus.OK) ;
     	}
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST) ;
     }
@@ -62,7 +61,7 @@ public class SpaceshipController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Spaceship> update(@PathVariable Long id, @RequestBody Spaceship spaceshipDetails) {
-        Spaceship spaceship = this.spaceshipService.findById(id).orElse(null);
+        Spaceship spaceship = this.spaceshipService.findById(id);
         if (spaceship != null) {
             spaceship.setName(spaceshipDetails.getName());
             return new ResponseEntity<>(this.spaceshipService.save(spaceship), HttpStatus.OK);
