@@ -1,6 +1,7 @@
 package com.project.spaceship.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,43 +21,53 @@ import com.project.spaceship.model.Spaceship;
 import com.project.spaceship.service.SpaceshipService;
 
 @RestController
-@RequestMapping("/api/spaceships")
+@RequestMapping("/api/v1/spaceships")
 public class SpaceshipController {
 	
 	@Autowired
     private SpaceshipService spaceshipService;
 
-    @GetMapping
-    public ResponseEntity<Page<Spaceship>> getAllSpaceships(
+	@GetMapping("/pages")
+    public ResponseEntity<Page<Spaceship>> getPages(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         Page<Spaceship> spaceshipsPage = this.spaceshipService.findAll(page, size);
         return new ResponseEntity<>(spaceshipsPage, HttpStatus.OK);
     }
+	
+    @GetMapping("/all")
+    public ResponseEntity<List<Spaceship>> getAll() {
+        return new ResponseEntity<>(this.spaceshipService.findAll(), HttpStatus.OK);
+    }
     
     @GetMapping("/{id}")
-    public Spaceship getById(@PathVariable Long id) {
-        return this.spaceshipService.findById(id);
+    public ResponseEntity<Spaceship> getById(@PathVariable Long id) {
+    	Optional<Spaceship> s = this.spaceshipService.findById(id);
+    	if ( s.isPresent()) {
+    		return new ResponseEntity<>(s.get(), HttpStatus.OK) ;
+    	}
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST) ;
     }
 
     @GetMapping("/search")
-    public List<Spaceship> searchByName(@RequestParam String name) {
-        return this.spaceshipService.findByNameContainingIgnoreCase(name);
+    public ResponseEntity<List<Spaceship>> searchByName(@RequestParam String name) {
+        return new ResponseEntity<>(this.spaceshipService.findByNameContainingIgnoreCase(name), HttpStatus.OK);
     }
     
     @PostMapping
-    public Spaceship create(@RequestBody Spaceship spaceship) {
-        return this.spaceshipService.save(spaceship);
+    public ResponseEntity<Spaceship> create(@RequestBody Spaceship spaceship) {
+        this.spaceshipService.save(spaceship);
+        return new ResponseEntity<>(spaceship, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public Spaceship update(@PathVariable Long id, @RequestBody Spaceship spaceshipDetails) {
-        Spaceship spaceship = this.spaceshipService.findById(id);
+    public ResponseEntity<Spaceship> update(@PathVariable Long id, @RequestBody Spaceship spaceshipDetails) {
+        Spaceship spaceship = this.spaceshipService.findById(id).orElse(null);
         if (spaceship != null) {
             spaceship.setName(spaceshipDetails.getName());
-            return this.spaceshipService.save(spaceship);
+            return new ResponseEntity<>(this.spaceshipService.save(spaceship), HttpStatus.OK);
         }
-        return null;
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping("/{id}")

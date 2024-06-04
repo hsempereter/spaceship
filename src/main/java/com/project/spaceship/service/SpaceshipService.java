@@ -1,6 +1,7 @@
 package com.project.spaceship.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
@@ -20,14 +21,18 @@ public class SpaceshipService {
         this.spaceshipRepository = spaceshipRepository;
     }
 
-    public Spaceship findById(Long id) {
-        return this.spaceshipRepository.findById(id).orElse(null);
+    public Optional<Spaceship> findById(Long id) {
+        return this.spaceshipRepository.findById(id);
     }
 
     @Cacheable("spaceships")    
     public Page<Spaceship> findAll(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return this.spaceshipRepository.findAll(pageable);
+    }
+    
+    public List<Spaceship> findAll() {
+        return this.spaceshipRepository.findAll();
     }
 
     public Spaceship save(Spaceship spaceship) {
@@ -42,7 +47,7 @@ public class SpaceshipService {
         return this.spaceshipRepository.findByNameContainingIgnoreCase(name);
     }
     
-    public Spaceship findByName(String name) {
+    public Optional<Spaceship> findByName(String name) {
         return this.spaceshipRepository.findByName(name);
     }
     

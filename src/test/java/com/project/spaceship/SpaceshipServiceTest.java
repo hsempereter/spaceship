@@ -1,22 +1,22 @@
 package com.project.spaceship;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 import com.project.spaceship.model.Spaceship;
 import com.project.spaceship.service.SpaceshipService;
 
 @SpringBootTest
-@ActiveProfiles("test")
-class SpaceshipRepositoryTest {
+class SpaceshipServiceTest {
 	
 	@Autowired
     private SpaceshipService spaceshipService;
@@ -44,12 +44,18 @@ class SpaceshipRepositoryTest {
 		String oldName = "Test";
 		String newName = "Update";
 		
-        Spaceship s = this.spaceshipService.findByName(oldName);
-        s.setName(newName);
-        this.spaceshipService.save(s);
+        Optional<Spaceship> snapship = this.spaceshipService.findByName(oldName);
+        if ( snapship.isPresent() ) {
+        	Spaceship s = snapship.get();
+        	s.setName(newName);
+            this.spaceshipService.save(s);
 
-        Spaceship updatedSpaceship = this.spaceshipService.findByName(newName);
-        assertEquals(updatedSpaceship.getName(), newName);
+            Optional<Spaceship> updatedSpaceship = this.spaceshipService.findByName(newName);
+            assertEquals(updatedSpaceship.isPresent() ? updatedSpaceship.get().getName() : "", newName);
+        } else {
+        	assertTrue(false);
+        }
+        
 	}
 
 	@Test
