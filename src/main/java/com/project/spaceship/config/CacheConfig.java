@@ -12,6 +12,6 @@ public class CacheConfig {
 
     @Bean
     public CacheManager cacheManager() {
-        return new ConcurrentMapCacheManager("spaceships");
+        return new ConcurrentMapCacheManager("spaceshipsByNameContaining", "spaceshipByName");
     }
 }

@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -25,7 +24,6 @@ public class SpaceshipService extends BaseService<Spaceship, SpaceshipDto> {
 	@Autowired
     private SpaceshipRepository spaceshipRepository;
 
-    @Cacheable("spaceships")    
     public List<SpaceshipDto> findAll(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return this.spaceshipMapper.entityToDto(this.spaceshipRepository.findAll(pageable));
