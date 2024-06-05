@@ -22,19 +22,18 @@ public abstract class BaseService<T extends BaseEntity, D extends BaseDto> imple
 	@Autowired
 	protected BaseMapper<T, D> baseMapper;
 
-    public T findById(Long id) {
+    public D findById(Long id) {
     	if ( this.baseRepository.findById(id).isPresent())
-    		return this.baseRepository.findById(id).get(); 
+    		return this.baseMapper.entityToDto(this.baseRepository.findById(id).get()); 
     	return null;
     }
     
- // With DTO
     public List<D> findAll() {
         return this.baseMapper.entityToDto(this.baseRepository.findAll());
     }
 
-    public T save(T entity) {
-        return this.baseRepository.save(entity);
+    public D save(D dto) {
+        return this.baseMapper.entityToDto(this.baseRepository.save(this.baseMapper.dtoToEntity(dto)));
     }
 
     public void deleteById(Long id) {
