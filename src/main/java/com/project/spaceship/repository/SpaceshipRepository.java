@@ -10,19 +10,18 @@ import com.project.spaceship.model.Spaceship;
 
 public interface SpaceshipRepository extends BaseRepository<Spaceship> {
 
-    @Cacheable("spaceshipsByNameContaining")
+	@Cacheable("spaceshipsByNameContaining")
 	List<Spaceship> findByNameContainingIgnoreCase(String name);
-    
-    @Cacheable("spaceshipByName")
+
+	@Cacheable("spaceshipByName")
 	Optional<Spaceship> findByName(String name);
-    
-    
-    @Override
-    @CacheEvict(value = {"spaceshipsByName", "spaceshipByName"}, allEntries = true)
+
+	@Override
+	@CacheEvict(value = { "spaceshipsByNameContaining", "spaceshipByName" }, key = "#result.id")
 	Spaceship save(Spaceship entity);
-    
-    @Override
-    @CacheEvict(value = {"spaceshipsByName", "spaceshipByName"}, allEntries = true)
-    void deleteById(Long id);
-	
+
+	@Override
+	@CacheEvict(value = { "spaceshipsByNameContaining", "spaceshipByName" }, key = "#id")
+	void deleteById(Long id);
+
 }

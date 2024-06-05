@@ -17,26 +17,25 @@ import com.project.spaceship.repository.SpaceshipRepository;
 public class SpaceshipService extends BaseService<Spaceship, SpaceshipDto> {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Autowired
 	SpaceshipMapper spaceshipMapper;
-	
-	@Autowired
-    private SpaceshipRepository spaceshipRepository;
 
-    public List<SpaceshipDto> findAll(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return this.spaceshipMapper.entityToDto(this.spaceshipRepository.findAll(pageable));
-    }
-    
-    public List<SpaceshipDto> findByNameContainingIgnoreCase(String name) {
-        return this.spaceshipMapper.entityToDto(this.spaceshipRepository.findByNameContainingIgnoreCase(name));
-    }
-    
-    public SpaceshipDto findByName(String name) {
-    	Optional<Spaceship> ent = this.spaceshipRepository.findByName(name);
-    	return ent.isPresent() ? this.spaceshipMapper.entityToDto(ent.get()) : new SpaceshipDto();
-    }
-    
-    
+	@Autowired
+	private SpaceshipRepository spaceshipRepository;
+
+	public List<SpaceshipDto> findAll(int page, int size) {
+		Pageable pageable = PageRequest.of(page, size);
+		return this.spaceshipMapper.entityToDto(this.spaceshipRepository.findAll(pageable));
+	}
+
+	public List<SpaceshipDto> findByNameContainingIgnoreCase(String name) {
+		return this.spaceshipMapper.entityToDto(this.spaceshipRepository.findByNameContainingIgnoreCase(name));
+	}
+
+	public SpaceshipDto findByName(String name) {
+		Optional<Spaceship> ent = this.spaceshipRepository.findByName(name);
+		return ent.isPresent() ? this.spaceshipMapper.entityToDto(ent.get()) : new SpaceshipDto();
+	}
+
 }

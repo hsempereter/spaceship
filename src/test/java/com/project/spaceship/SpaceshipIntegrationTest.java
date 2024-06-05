@@ -27,7 +27,7 @@ import com.project.spaceship.service.SpaceshipService;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(SpaceshipController.class)
-class SpaceshipRepositoryIntegrationTest {
+class SpaceshipIntegrationTest {
 	
 	@Autowired
     private MockMvc mockMvc;
